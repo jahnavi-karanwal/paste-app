@@ -113,7 +113,7 @@ const Home = () => {
                   });
                 }}
               >
-                <Copy className="group-hover:text-sucess-500" size={20} />
+                <Copy className="group-hover:text-green-500" size={20} />
               </button>
             </div>
           </div>

@@ -1,10 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { toast } from "react-hot-toast"
 
+const safeReadPastesFromStorage = () => {
+  try {
+    const raw = localStorage.getItem("pastes")
+    if (!raw) return []
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
 const initialState = {
-  pastes: localStorage.getItem("pastes")
-    ? JSON.parse(localStorage.getItem("pastes"))
-    : []
+  pastes: safeReadPastesFromStorage(),
 }
 
 const pasteSlice = createSlice({
@@ -45,7 +54,6 @@ const pasteSlice = createSlice({
     removeFromPastes: (state, action) => {
       const pasteId = action.payload
 
-      console.log(pasteId)
       const index = state.pastes.findIndex((item) => item._id === pasteId)
 
       if (index >= 0) {

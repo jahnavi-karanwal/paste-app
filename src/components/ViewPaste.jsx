@@ -6,21 +6,27 @@ import { useParams } from "react-router-dom";
 const ViewPaste = () => {
   const { id } = useParams();
 
-  console.log(id)
-
   const pastes = useSelector((state) => state.paste.pastes);
 
-  // Filter pastes based on search term (by title or content)
-  const paste = pastes.filter((paste) => paste._id === id)[0];
+  const paste = pastes.find((item) => item._id === id);
 
-  console.log("Paste->",paste);
+  if (!paste) {
+    return (
+      <div className="w-full h-full py-10 max-w-[1200px] mx-auto px-5 lg:px-0">
+        <div className="text-2xl text-center w-full text-chileanFire-500">
+          Paste not found
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-full py-10 max-w-[1200px] mx-auto px-5 lg:px-0">
       <div className="flex flex-col gap-y-5 items-start">
         <input
           type="text"
           placeholder="Title"
-          value={paste.title}
+          value={paste.title ?? ""}
           disabled
           className="w-full text-black border border-input rounded-md p-2"
         />
@@ -51,14 +57,14 @@ const ViewPaste = () => {
                   toast.success("Copied to Clipboard");
                 }}
               >
-                <Copy className="group-hover:text-sucess-500" size={20} />
+                <Copy className="group-hover:text-green-500" size={20} />
               </button>
             </div>
           </div>
 
           {/* TextArea */}
           <textarea
-            value={paste.content}
+            value={paste.content ?? ""}
             disabled
             placeholder="Write Your Content Here...."
             className="w-full p-3  focus-visible:ring-0"
